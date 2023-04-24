@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encriptador de Texto</title>
+    <link rel="shortcut icon" href="assets/img/Top.svg" type="image/x-icon">
+    <!-- Inconify -->
+    <script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+    <!-- Archivos Locales -->
+    <link rel="stylesheet" href="css/style.min.css">
+    <script defer src="js/app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <picture class="logo-picture">
+                <a href="https://www.aluracursos.com/" target="_blank">
+                    <img src="assets/img/Top.svg" alt="Alura Logo" class="logo-img" >
+                </a>
+            </picture>
+        </header>
+        
+        <main class="main">
+            <textarea id="textarea" placeholder="Enter text here"></textarea>
+            <p class="main__text">
+                <span class="iconify" data-icon="bi:exclamation-circle-fill"></span>
+                <span>Only lowercase letters and no accents</span> 
+            </p>
+
+            <div class="buttons-content">
+                <button type="submit" id="btn-encript" class="btn btn--primary">encript</button>
+                <button type="submit" id="btn-decript" class="btn btn--secondary">decript</button>
+            </div>
+        </main>
+
+        <aside class="aside">
+            <div class="content-text" id="content-text">
+                <picture class="hero-img">
+                    <img src="assets/img/Muñeco.svg" alt="Muñeco">
+                </picture>
+                
+                <h2>No messages found</h2>
+                <h4 class="text-desencript" id="textoDecodificado">Enter the text to be encrypted or decrypted.</h4>
+                <button type="submit" id="btn-copy"  class="btn btn--secondary">copy</button>
+            </div>
+        </aside>
+
+        <footer class="footer">
+
+        </footer>
+    </div>
+
+   
+</body>
+</html>
