@@ -1,6 +1,4 @@
-@use 'partials/reset';
-@use 'mixins/mixins';
-
+@use 'mixins/_mixins';
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;700;800;900&display=swap");
 
 :root {
@@ -10,14 +8,12 @@
     --dark-blue-300: #0a3871;
     --dark-blue-400: #072b61;
     --dark-blue-500: #052051;
-
     /* Light blue */
     --light-blue-100: #f3f5fc;
     --light-blue-200: #eff1fa;
     --light-blue-300: #e9ecf8;
     --light-blue-400: #aab2d5;
     --light-blue-500: #757fb2;
-
     /* Gray */
     --gray-100: #ced4da;
     --gray-200: #adb5bd;
@@ -41,10 +37,6 @@ body {
     margin-inline: auto;
 }
 
-body > .container {
-    min-height: 100vh;
-}
-
 .logo-img {
     width: 2rem;
 }
@@ -58,30 +50,31 @@ body > .container {
 .main {
     grid-area: main;
     @include mixins.flexbox(column, center);
-}
+    
+    & textarea {
+        min-height: 300px;
+        font-size: 2rem;
+        font-weight: 400;
+        color: var(--dark-blue-300);
+        resize: none;
+        outline: none;
+    }
+    
+    &__text {
+        @include mixins.flexbox(row, left, initial, 0px 8px);
+        margin: 16px 0;
+        color: var(--gray-400);
 
-.main textarea {
-    min-height: 300px;
-    font-size: 2rem;
-    font-weight: 400;
-    color: var(--dark-blue-300);
-    resize: none;
-}
-
-.main textarea:invalid {
-    outline: 2px solid #c00000;
-}
-
-.main__text {
-    @include mixins.flexbox(row, left, initial, 0px 8px);
-    margin: 16px 0;
-    color: var(--gray-400);
-}
-
-.main__text span {
-    cursor: context-menu;
-    font-size: 12px;
-    align-self: center;
+        & span {
+            cursor: context-menu;
+            font-size: 12px;
+            align-self: center;
+        }
+        
+        & svg {
+            width: initial;
+        }
+    }
 }
 
 /* Estilos de los botones */
@@ -89,33 +82,32 @@ body > .container {
     font-size: 1rem;
     @include mixins.flexbox(column);
     gap: 24px;
-}
-
-.buttons-content .btn {
-    flex-grow: 1;
+    
+    & .btn {
+        flex-grow: 1;
+    }
 }
 
 .btn {
     text-transform: capitalize;
     padding: 24px 48px;
     border-radius: 24px;
-
     transition: 400ms ease background-color;
-}
+    
+    &--primary {
+        background-color: var(--dark-blue-300);
+        color: #ffffff;
 
-.btn.btn--primary {
-    background-color: var(--dark-blue-300);
-    color: #ffffff;
-}
+        &:hover {
+            background-color: var(--dark-blue-500);
+        }
+    }
 
-.btn.btn--primary:hover {
-    background-color: var(--dark-blue-500);
-}
-
-.btn.btn--secondary {
-    border: 1px solid var(--dark-blue-300);
-    color: var(--dark-blue-300);
-    background-color: transparent;
+    &--secondary {
+        border: 1px solid var(--dark-blue-300);
+        color: var(--dark-blue-300);
+        background-color: transparent;
+    }
 }
 
 .aside {
@@ -123,56 +115,51 @@ body > .container {
     width: 100%;
     max-width: 100%;
     margin: 40px auto;
-
 }
 
 .content-text {
     @include mixins.flexbox(column, space-between, initial, 8px);
-
     text-align: center;
     height: 100%;
-    
+
     padding: 32px;
     border-radius: 32px;
-    
     background-color: #ffffff;
     box-shadow: 0px 24px 32px -8px #00000014;
-}
 
-.content-text > h2 {
-    font-size: 24px;
-    color: var(--gray-500);
-    font-weight: 700;
+    h2 {
+        font-size: 24px;
+        color: var(--gray-500);
+        font-weight: 700;
+    }
+    
+    .text-desencript {
+        word-break: break-all;
+        font-weight: 400;
+        color: var(--gray-400);
+    }
+    
+    .btn.btn--secondary, .hero-img {
+        display: none;
+    }
+    
+    &.active {
+        text-align: left;
+        justify-content: space-between;
+        
+        &.text-desencript {
+            font-size: 24px;
+        }
+        
+        &>:not(.text-desencript, .btn) {
+            display: none;
+        }
+        
+        .btn.btn--secondary {
+            display: unset;
+        }
+    }
 }
-
-.content-text > .text-desencript {
-    word-break: break-all;
-    font-weight: 400;
-    color: var(--gray-400);
-}
-
-.content-text .btn.btn--secondary, .hero-img {
-    display: none;
-}
-
-/* ================== */
-.content-text.active {
-    text-align: left;
-    justify-content: space-between;
-}
-
-.content-text.active>.text-desencript {
-    font-size: 24px;
-}
-
-.content-text.active>:not(.text-desencript, .btn) {
-    display: none;
-}
-
-.content-text.active .btn.btn--secondary {
-    display: unset;
-}
-
 
 /* Encriptador Tablet */
 @media screen and (min-width: 768px) {
@@ -186,14 +173,17 @@ body > .container {
     body > .container {
         display: grid;
         grid-template:  "header aside" auto 
-                         "main aside" 100% 
-                         / 2fr 1fr; 
-        column-gap: 80px;
+                        "main aside" auto / 2fr 1fr; 
+        gap: 80px;
     }
 
     .main textarea {
         overflow-y: auto;
         height: auto;
+    }
+
+    .aside{
+        margin-bottom: 0;
     }
 
     .content-text {

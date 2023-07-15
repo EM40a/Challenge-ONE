@@ -1,61 +1,58 @@
-const BOTON_ENCRIPTAR = document.getElementById('btn-encript');
-const BOTON_DESENCRIPTAR = document.getElementById('btn-decript');
+const TEXT_AREA = document.querySelector('textarea');
+const TEXTO_RETORNADO = document.querySelector(".text-desencript");
+
+const BOTON_ENCRIPTAR = document.querySelector('.btn--primary');
+const BOTON_DESENCRIPTAR = document.querySelector('.btn--secondary');
 const BOTON_COPY = document.getElementById('btn-copy');
-const CONTENEDOR_TEXTO = document.getElementById('content-text');
-const TEXTO_INGRESADO = document.getElementById('textarea');
-const TEXTO_RETORNADO = document.getElementById("textoDecodificado");
 
-function validarTexto(texto) {
-    const REGEX = /^[a-z0-9\s,.!?]+$/;
-    REGEX.test(texto) && texto.length > 0 ? estado = true : estado = false
-    return estado;
+
+function botones (modo) {
+    const CONTENEDOR_TEXTO = document.querySelector('.content-text');
+    CONTENEDOR_TEXTO.classList.add('active');
+
+    modo == "Encriptar" 
+    ? textoEncriptado = encriptarDesencriptar(modo, TEXT_AREA.value) 
+    : textoEncriptado = encriptarDesencriptar(modo, TEXT_AREA.value)
+    
+    TEXTO_RETORNADO.innerHTML = textoEncriptado
 }
 
-function encriptar(texto) {
-    //Recibe un texto como parametro y lo encripta con las claves dadas
-    texto = texto.replace(/e/g, "enter");
-    texto = texto.replace(/i/g, "imes");
-    texto = texto.replace(/a/g, "ai");
-    texto = texto.replace(/o/g, "ober");
-    texto = texto.replace(/u/g, "ufat");
+function encriptarDesencriptar(modo, texto) {
+    let matrizCodigo = [["e", "enter"], ["i", "imes"], ["a", "ai"],["o", "ober"], ["u", "ufat"]]
+
+    texto = texto.toLowerCase()
+    for (let i = 0; i < matrizCodigo.length; i++) {
+        if (texto.includes(matrizCodigo[i][0]) && modo == "Encriptar") {
+            texto = texto.replaceAll(matrizCodigo[i][0], matrizCodigo[i][1])
+        }
+        
+        if (texto.includes(matrizCodigo[i][1]) && modo == "Desencriptar")  {
+            texto = texto.replaceAll(matrizCodigo[i][1], matrizCodigo[i][0])  
+        }
+    }
+
     return texto;
 }
 
-function desencriptar(texto) {
-    // Reemplazar las letras encriptadas con su versión original
-    texto = texto.replace(/enter/g, "e");
-    texto = texto.replace(/imes/g, "i");
-    texto = texto.replace(/ai/g, "a");
-    texto = texto.replace(/ober/g, "o");
-    texto = texto.replace(/ufat/g, "u");
-    return texto;
-}
-
-function encriptarODesencriptar(texto, accion) {
-    //Valida el texto y de ser valido ejecuta la accion indicada
-    if (validarTexto(texto) == true) {
-        CONTENEDOR_TEXTO.classList.add('active');
-        accion == 'Encriptar' ? textoFinal = encriptar(texto) : textoFinal = desencriptar(texto)
-        TEXTO_RETORNADO.innerHTML = textoFinal
-    }
-    else {
-        console.log('El texto es invalido');
-    }
-}
-
-TEXTO_INGRESADO.addEventListener('input', function () {
+TEXT_AREA.addEventListener('input', function () {
     this.style.height = 'auto';
     this.style.height = this.scrollHeight + 'px';
-}.bind(TEXTO_INGRESADO), false);
+}.bind(TEXT_AREA), false);
 
 BOTON_ENCRIPTAR.addEventListener('click', ()=> {
-    encriptarODesencriptar(TEXTO_INGRESADO.value, 'Encriptar')
+    botones("Encriptar");
+
 })
 BOTON_DESENCRIPTAR.addEventListener('click', ()=> {
-    encriptarODesencriptar(TEXTO_INGRESADO.value, 'Desencriptar')
+    botones("Desencriptar");
 })
 
 BOTON_COPY.addEventListener('click', ()=> {
-    //Copia el texto al portapapeles
-    navigator.clipboard.writeText(TEXTO_RETORNADO.innerHTML);
+    let auxiliar = document.createElement("textarea");
+    auxiliar.textContent = TEXTO_RETORNADO.textContent;
+    document.body.appendChild(auxiliar);
+    auxiliar.select();
+    document.execCommand("copy");
+    document.body.removeChild(auxiliar);    
+    alert("¡Texto copiado!");
 })
